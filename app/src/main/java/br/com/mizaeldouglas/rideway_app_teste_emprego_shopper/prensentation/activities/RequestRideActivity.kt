@@ -31,7 +31,7 @@ class RequestRideActivity : AppCompatActivity() {
 
                 Log.i(
                     "RequestRideActivityTrue",
-                    "Dados enviados: customerId=$customerId, origin=$origin, destination=$destination"
+                    "Dados enviados: \ncustomerId=$customerId,\n origin=$origin, \ndestination=$destination"
                 )
 
                 if (customerId.isBlank() || origin.isBlank() || destination.isBlank()) {
@@ -52,11 +52,9 @@ class RequestRideActivity : AppCompatActivity() {
                             val rideOptions = response.body()
 
                             if (rideOptions != null && rideOptions.options != null) {
-                                Toast.makeText(
-                                    this@RequestRideActivity,
-                                    "Ride options: ${rideOptions.options}",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                Log.i("rideOptionsDuration", rideOptions.options.toString())
+
+
                                 val intent = Intent(
                                     this@RequestRideActivity,
                                     RideOptionsActivity::class.java
