@@ -4,26 +4,15 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="testRunner" value="CHOOSE_PER_TEST" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="gradleJvm" value="#GRADLE_LOCAL_JAVA_HOME" />
         <option name="modules">
           <set>
-            <option value="$USER_HOME$/Programação/WorkSpace-kotlin/Cursos/JamiltonDamasceno/RideWayApp_Teste_Emprego_Shopper" />
-            <option value="$USER_HOME$/Programação/WorkSpace-kotlin/Cursos/JamiltonDamasceno/RideWayApp_Teste_Emprego_Shopper/app" />
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/app" />
           </set>
         </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="testRunner" value="CHOOSE_PER_TEST" />
-        <option name="externalProjectPath" value="$USER_HOME$/Programação/WorkSpace-kotlin/Cursos/JamiltonDamasceno/RideWayApp_Teste_Emprego_Shopper" />
-        <option name="gradleJvm" value="#GRADLE_LOCAL_JAVA_HOME" />
-        <option name="modules">
-          <set>
-            <option value="$USER_HOME$/Programação/WorkSpace-kotlin/Cursos/JamiltonDamasceno/RideWayApp_Teste_Emprego_Shopper" />
-            <option value="$USER_HOME$/Programação/WorkSpace-kotlin/Cursos/JamiltonDamasceno/RideWayApp_Teste_Emprego_Shopper/app" />
-          </set>
-        </option>
+        <option name="resolveExternalAnnotations" value="false" />
       </GradleProjectSettings>
     </option>
   </component>

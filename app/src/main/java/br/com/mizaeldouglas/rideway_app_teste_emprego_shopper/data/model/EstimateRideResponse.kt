@@ -6,24 +6,10 @@ data class EstimateRideResponse(
     val distance: Double,
     val duration: String,
     val options: List<DriverOption>,
-    val routeResponse: Any? // Mude conforme necessário
+    val routeResponse: Any?
 )
 
-data class Location(
-    val latitude: Double,
-    val longitude: Double
-)
 
-data class DriverOption(
-    val id: Int,
-    val name: String,
-    val description: String,
-    val vehicle: String,
-    val review: Review,
-    val value: Double
-)
 
-data class Review(
-    val rating: Double,
-    val comment: String
-)
+
+

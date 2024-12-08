@@ -1,10 +1,11 @@
-package br.com.mizaeldouglas.rideway_app_teste_emprego_shopper
+package br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.prensentation.activities
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
