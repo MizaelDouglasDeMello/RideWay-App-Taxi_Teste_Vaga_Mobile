@@ -1,15 +1,44 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="8dp">
 
-  <RadioButton
-      android:id="@+id/radioButton"
-      android:layout_width="match_parent"
+  <TextView
+      android:id="@+id/tvName"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:buttonTint="@color/black"
-      android:padding="8dp"
-      android:textSize="16sp" />
+      android:textStyle="bold"
+      android:text="Driver Name" />
+
+  <TextView
+      android:id="@+id/tvDescription"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Description" />
+
+  <TextView
+      android:id="@+id/tvVehicle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Vehicle" />
+
+  <TextView
+      android:id="@+id/tvRating"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Rating" />
+
+  <TextView
+      android:id="@+id/tvPrice"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Price" />
+
+  <Button
+      android:id="@+id/btnChoose"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="choose" />
 </LinearLayout>

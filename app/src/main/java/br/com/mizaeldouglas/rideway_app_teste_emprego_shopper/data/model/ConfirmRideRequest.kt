@@ -10,7 +10,3 @@ data class ConfirmRideRequest(
     val value: Double
 )
 
-data class Driver(
-    val id: Int,
-    val name: String
-)

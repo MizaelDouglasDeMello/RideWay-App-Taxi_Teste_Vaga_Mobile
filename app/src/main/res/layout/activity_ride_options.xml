@@ -6,6 +6,14 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+
+    <ImageView
+        android:id="@+id/imgMap"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:contentDescription="mapa"
+        android:scaleType="centerCrop" />
+
     <TextView
         android:id="@+id/tvRideSummary"
         android:layout_width="match_parent"
@@ -27,6 +35,8 @@
         android:id="@+id/btnConfirmOption"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Confirm Option"
+        android:layout_marginTop="16dp"
+        android:text="confirm"
         android:visibility="gone" />
+
 </LinearLayout>

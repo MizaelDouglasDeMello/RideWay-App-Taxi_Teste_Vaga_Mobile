@@ -1,51 +1,47 @@
 package br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.prensentation.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.RadioButton
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.data.model.DriverOption
 import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.databinding.RecyclerViewItemBinding
 
 class RideOptionsAdapter(
     private val onOptionSelected: (DriverOption) -> Unit
-) : RecyclerView.Adapter<RideOptionsAdapter.RideOptionViewHolder>() {
+) : RecyclerView.Adapter<RideOptionsAdapter.ViewHolder>() {
 
-    private var options = emptyList<DriverOption>()
-    private var selectedPosition = -1
+    private var options: List<DriverOption> = listOf()
 
     fun updateData(newOptions: List<DriverOption>) {
         options = newOptions
         notifyDataSetChanged()
     }
 
-    inner class RideOptionViewHolder(private val binding: RecyclerViewItemBinding) :
+    inner class ViewHolder(private val binding: RecyclerViewItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(option: DriverOption, isSelected: Boolean) {
-            binding.radioButton.apply {
-                text = "${option.name} - ${option.vehicle} - $${option.value}"
-                isChecked = isSelected
-                setOnClickListener {
-                    selectedPosition = adapterPosition
-                    notifyDataSetChanged()
-                    onOptionSelected(option)
-                }
+        fun bind(option: DriverOption) {
+            binding.tvName.text = option.name
+            binding.tvDescription.text = option.description
+            binding.tvVehicle.text = option.vehicle
+            binding.tvRating.text = "Rating: ${option.review.rating}"
+            binding.tvPrice.text = "Price: $${option.value}"
+            binding.btnChoose.setOnClickListener {
+                Toast.makeText(binding.root.context, "Selected option: ${option.name}", Toast.LENGTH_SHORT).show()
+                onOptionSelected(option)
             }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RideOptionViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = RecyclerViewItemBinding.inflate(layoutInflater, parent, false)
-        return RideOptionViewHolder(binding)
+        return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: RideOptionViewHolder, position: Int) {
-        val option = options[position]
-        holder.bind(option, position == selectedPosition)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(options[position])
     }
 
-    override fun getItemCount(): Int = options.size
+    override fun getItemCount() = options.size
 }
