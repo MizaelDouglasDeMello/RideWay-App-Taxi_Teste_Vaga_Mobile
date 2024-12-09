@@ -51,13 +51,16 @@ class RequestRideActivity : AppCompatActivity() {
                         if (response.isSuccessful) {
                             val rideOptions = response.body()
 
-                            if (rideOptions != null && rideOptions.options != null) {
+                            if (rideOptions != null) {
                                 Log.i("rideOptionsDuration", rideOptions.options.toString())
-
 
                                 val intent = Intent(
                                     this@RequestRideActivity,
                                     RideOptionsActivity::class.java
+                                )
+                                intent.putExtra(
+                                    "rideResponse",
+                                    rideOptions
                                 )
                                 intent.putExtra("rideOptions", ArrayList(rideOptions.options))
                                 startActivity(intent)

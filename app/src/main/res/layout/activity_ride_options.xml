@@ -7,12 +7,12 @@
     android:padding="16dp">
 
 
-    <ImageView
-        android:id="@+id/imgMap"
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:contentDescription="mapa"
-        android:scaleType="centerCrop" />
+        tools:context=".prensentation.activities.MapsActivity" />
 
     <TextView
         android:id="@+id/tvRideSummary"
