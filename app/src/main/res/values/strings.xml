@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">RideWay-App_Teste_Emprego_Shopper</string>
+    <string name="app_name">RideWay Aplicativo de Taxi</string>
     <string name="title_activity_maps">MapsActivity</string>
 </resources>

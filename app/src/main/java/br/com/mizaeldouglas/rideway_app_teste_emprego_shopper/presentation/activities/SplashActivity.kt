@@ -12,12 +12,10 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        // Temporizador para exibir a Splash por 2 segundos
         Handler().postDelayed({
-            // Após o tempo, iniciar a MainActivity (Home)
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
-            finish()  // Finaliza a SplashActivity para não permitir voltar para ela
-        }, 2000)  // 2000 milissegundos = 2 segundos
+            finish()
+        }, 2000)
     }
 }
