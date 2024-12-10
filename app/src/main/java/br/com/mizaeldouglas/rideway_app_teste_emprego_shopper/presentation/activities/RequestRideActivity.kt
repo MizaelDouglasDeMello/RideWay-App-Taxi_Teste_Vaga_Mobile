@@ -1,4 +1,4 @@
-package br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.prensentation.activities
+package br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.presentation.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,7 +7,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.databinding.ActivityRequestRideBinding
-import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.prensentation.viewmodel.RequestRideViewModel
+import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.presentation.viewmodel.RequestRideViewModel
 
 class RequestRideActivity : AppCompatActivity() {
 
@@ -57,5 +57,7 @@ class RequestRideActivity : AppCompatActivity() {
         viewModel.errorMessage.observe(this) { errorMessage ->
             Toast.makeText(this@RequestRideActivity, errorMessage, Toast.LENGTH_SHORT).show()
         }
+
     }
+
 }

@@ -1,4 +1,4 @@
-package br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.prensentation.viewmodel
+package br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.presentation.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -37,5 +37,7 @@ class RequestRideViewModel : ViewModel() {
                 _errorMessage.value = "An error occurred: ${e.message}"
             }
         }
+
     }
+
 }

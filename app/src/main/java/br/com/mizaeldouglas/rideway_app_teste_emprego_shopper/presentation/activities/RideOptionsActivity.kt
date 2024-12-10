@@ -1,20 +1,19 @@
-package br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.prensentation.activities
+package br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.presentation.activities
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.R
 import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.data.model.DriverOption
 import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.data.model.EstimateRideResponse
 import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.databinding.ActivityRideOptionsBinding
-import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.prensentation.adapters.RideOptionsAdapter
-import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.prensentation.viewmodel.RideOptionsViewModel
+import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.presentation.adapters.RideOptionsAdapter
+import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.presentation.viewmodel.RideOptionsViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -26,7 +25,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class RideOptionsActivity : AppCompatActivity(), OnMapReadyCallback, RideOptionsAdapter.OnOptionSelectedListener {
 
-    private lateinit var viewModel: RideOptionsViewModel
+    private lateinit var rideOptionsViewModel: RideOptionsViewModel
     private lateinit var mMap: GoogleMap
 
     private val binding by lazy {
@@ -37,7 +36,7 @@ class RideOptionsActivity : AppCompatActivity(), OnMapReadyCallback, RideOptions
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(this).get(RideOptionsViewModel::class.java)
+        rideOptionsViewModel = ViewModelProvider(this)[RideOptionsViewModel::class.java]
 
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
@@ -45,7 +44,7 @@ class RideOptionsActivity : AppCompatActivity(), OnMapReadyCallback, RideOptions
 
         val rideOptions = intent.getParcelableArrayListExtra<DriverOption>("rideOptions") ?: listOf()
         val rideResponse = intent.getParcelableExtra<EstimateRideResponse>("rideResponse")!!
-        viewModel.loadRideData(rideOptions, rideResponse)
+        rideOptionsViewModel.loadRideData(rideOptions, rideResponse)
 
         setupObservers()
         setupRecyclerView()
@@ -53,17 +52,31 @@ class RideOptionsActivity : AppCompatActivity(), OnMapReadyCallback, RideOptions
 
     private fun setupObservers() {
 
-        viewModel.rideOptions.observe(this) { options ->
+        rideOptionsViewModel.rideOptions.observe(this) { options ->
             binding.tvRideSummary.text = "Found ${options.size} options for your ride"
             (binding.rvRideOptions.adapter as RideOptionsAdapter).updateData(options)
         }
 
-        viewModel.toastMessage.observe(this) { message ->
+        rideOptionsViewModel.toastMessage.observe(this) { message ->
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         }
 
-        viewModel.selectedOption.observe(this) { option ->
+        rideOptionsViewModel.selectedOption.observe(this) { option ->
             showDriverInfoBottomSheet(option)
+        }
+
+        // Observando a navegação
+        rideOptionsViewModel.navigateToRideHistory.observe(this) { shouldNavigate ->
+            shouldNavigate?.let {
+                if (it) {
+                    // Navega para a tela RideHistoryActivity
+                    val intent = Intent(this, RideHistoryActivity::class.java)
+                    startActivity(intent)
+
+                    // Resetando o evento de navegação
+                    rideOptionsViewModel.onNavigateToRideHistoryHandled()
+                }
+            }
         }
     }
 
@@ -76,7 +89,7 @@ class RideOptionsActivity : AppCompatActivity(), OnMapReadyCallback, RideOptions
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        viewModel.rideResponse.observe(this) { rideResponse ->
+        rideOptionsViewModel.rideResponse.observe(this) { rideResponse ->
             val originLat = rideResponse?.origin?.latitude
             val originLng = rideResponse?.origin?.longitude
             val destinationLat = rideResponse?.destination?.latitude
@@ -101,7 +114,7 @@ class RideOptionsActivity : AppCompatActivity(), OnMapReadyCallback, RideOptions
     }
 
     override fun onOptionSelected(option: DriverOption) {
-        viewModel.selectOption(option)
+        rideOptionsViewModel.selectOption(option)
     }
 
     private fun showDriverInfoBottomSheet(option: DriverOption) {
@@ -115,8 +128,7 @@ class RideOptionsActivity : AppCompatActivity(), OnMapReadyCallback, RideOptions
         val btnAcceptRide = bottomSheetView.findViewById<Button>(R.id.btnAcceptRide)
         btnAcceptRide.setOnClickListener {
             bottomSheetDialog.dismiss()
-
-            viewModel.acceptRide("CT01")
+            rideOptionsViewModel.acceptRide("CT01")
         }
 
         bottomSheetDialog.setContentView(bottomSheetView)

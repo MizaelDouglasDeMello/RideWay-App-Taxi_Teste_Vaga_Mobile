@@ -1,4 +1,4 @@
-package br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.prensentation.viewmodel
+package br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.presentation.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -24,6 +24,13 @@ class RideOptionsViewModel : ViewModel() {
 
     private val _toastMessage = MutableLiveData<String>()
     val toastMessage: LiveData<String> = _toastMessage
+
+    private val _navigateToRideHistory = MutableLiveData<Boolean>()
+    val navigateToRideHistory: LiveData<Boolean> = _navigateToRideHistory
+
+
+
+
 
     fun loadRideData(rideOptions: List<DriverOption>, rideResponse: EstimateRideResponse?) {
         _rideOptions.value = rideOptions
@@ -73,7 +80,9 @@ class RideOptionsViewModel : ViewModel() {
                 val response = ApiClient.apiService.confirmRide(request)
 
                 if (response.isSuccessful && response.body()?.success == true) {
-                    _toastMessage.value = "Ride confirmed with ${selectedOptionValue.name}"
+                    _toastMessage.value = "Corrida confirmada com ${selectedOptionValue.name}"
+                    _navigateToRideHistory.value = true
+
                 } else {
                     _toastMessage.value = "Failed to confirm ride: ${response.errorBody()?.string() ?: "Unknown error"}"
                 }
@@ -81,5 +90,9 @@ class RideOptionsViewModel : ViewModel() {
                 _toastMessage.value = "An error occurred: ${e.message}"
             }
         }
+    }
+    // Função para resetar o evento de navegação
+    fun onNavigateToRideHistoryHandled() {
+        _navigateToRideHistory.value
     }
 }

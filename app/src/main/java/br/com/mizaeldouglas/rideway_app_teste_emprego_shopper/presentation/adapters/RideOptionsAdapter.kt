@@ -1,8 +1,7 @@
-package br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.prensentation.adapters
+package br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.presentation.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.data.model.DriverOption
 import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.databinding.RecyclerViewItemBinding
