@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.presentation.viewmodel.RideHistoryViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <!-- TextInputLayout for a more polished input field -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout_customer_id"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="ID do Passageiro"
+            app:boxStrokeColor="@color/teal_200"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_customer_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:text="@={viewModel.customerId}" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Spinner with Material styling -->
+        <Spinner
+            android:id="@+id/spinner_driver"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/spinner_background"
+            android:padding="8dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textInputLayout_customer_id" />
+
+        <!-- Button with Material Design -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_apply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:onClick="@{() -> viewModel.fetchRideHistory()}"
+            android:text="Aplicar"
+            app:backgroundTint="#000000"
+            app:icon="@drawable/ic_check"
+            app:iconPadding="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/spinner_driver" />
+
+        <!-- RecyclerView with padding and background -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_ride_history"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:padding="8dp"
+            android:background="@color/white"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/button_apply"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Historico de Viagens"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/textInputLayout_customer_id"
+            app:layout_constraintStart_toStartOf="@+id/textInputLayout_customer_id"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

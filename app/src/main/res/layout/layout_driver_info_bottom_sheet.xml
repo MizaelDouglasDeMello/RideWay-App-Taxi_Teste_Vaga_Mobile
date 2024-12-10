@@ -2,37 +2,67 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp">
 
-    <TextView
-        android:id="@+id/tvDriverName"
+    <!-- CardView para exibir informações do motorista -->
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Driver Name"
-        android:textStyle="bold"
-        android:textSize="18sp" />
+        android:layout_marginBottom="16dp"
+        android:radius="12dp"
+        android:elevation="4dp"
+        android:backgroundTint="#EFEFEF"
+        app:cardCornerRadius="12dp">
 
-    <TextView
-        android:id="@+id/tvRidePrice"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Price"
-        android:textSize="16sp" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp">
 
-    <TextView
-        android:id="@+id/tvVehicle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Vehicle"
-        android:textSize="16sp" />
+            <!-- Nome do motorista -->
+            <TextView
+                android:id="@+id/tvDriverName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nome do Motorista"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="#000000"
+                android:paddingBottom="8dp"/>
 
-    <Button
+            <!-- Preço da corrida -->
+            <TextView
+                android:id="@+id/tvRidePrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Preço"
+                android:textSize="16sp"
+                android:textColor="#444444"
+                android:paddingBottom="8dp"/>
+
+            <!-- Veículo -->
+            <TextView
+                android:id="@+id/tvVehicle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Veículo"
+                android:textSize="16sp"
+                android:textColor="#444444"/>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Botão de Aceitar corrida -->
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnAcceptRide"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Accept Ride"
+        android:text="Aceitar Corrida"
+        android:textColor="@android:color/white"
         android:backgroundTint="#000000"
-        android:textColor="@android:color/white" />
-
+        android:textSize="16sp"
+        android:layout_marginTop="16dp" />
 </LinearLayout>

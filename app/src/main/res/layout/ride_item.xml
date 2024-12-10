@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="ride"
+            type="br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.data.model.Ride" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:cardElevation="4dp"
+        app:cardCornerRadius="8dp"
+        app:cardBackgroundColor="@color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Ride Date -->
+            <TextView
+                android:id="@+id/txtDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Data e Hora: @{ride.date}"
+                android:textAppearance="?attr/textAppearanceSubtitle1"
+                android:textColor="@color/black"
+                android:drawableStart="@drawable/ic_calendar"
+                android:drawablePadding="8dp" />
+
+            <!-- Driver Name -->
+            <TextView
+                android:id="@+id/txtDriverName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Motorista: @{ride.driver.name}"
+                android:textAppearance="?attr/textAppearanceSubtitle2"
+                android:textColor="@color/black"
+                android:drawableStart="@drawable/ic_driver"
+                android:drawablePadding="8dp" />
+
+            <!-- Ride Origin -->
+            <TextView
+                android:id="@+id/txtOrigin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Origem: @{ride.origin}"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:drawableStart="@drawable/ic_origem"
+                android:drawablePadding="8dp" />
+
+            <!-- Ride Destination -->
+            <TextView
+                android:id="@+id/txtDestination"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Destino: @{ride.destination}"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:drawableStart="@drawable/ic_destination"
+                android:drawablePadding="8dp" />
+
+            <!-- Ride Distance -->
+            <TextView
+                android:id="@+id/txtDistance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Distância: @{ride.distance} km"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:drawableStart="@drawable/ic_distance"
+                android:drawablePadding="8dp" />
+
+            <!-- Ride Duration -->
+            <TextView
+                android:id="@+id/txtDuration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Duração: @{ride.duration} min"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:drawableStart="@drawable/ic_duration"
+                android:drawablePadding="8dp" />
+
+            <!-- Ride Value -->
+            <TextView
+                android:id="@+id/txtValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Valor: R$ @{ride.value}"
+                android:textAppearance="?attr/textAppearanceSubtitle1"
+                android:textColor="@color/teal_200"
+                android:drawableStart="@drawable/ic_value"
+                android:drawablePadding="8dp" />
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>
