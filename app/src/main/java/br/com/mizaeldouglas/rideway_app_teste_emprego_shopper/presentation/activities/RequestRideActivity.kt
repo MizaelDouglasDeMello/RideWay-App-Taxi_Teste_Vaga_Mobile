@@ -32,19 +32,40 @@ class RequestRideActivity : AppCompatActivity() {
                     "Dados enviados: \ncustomerId=$customerId,\n origin=$origin, \ndestination=$destination"
                 )
 
-                if (customerId.isBlank() || origin.isBlank() || destination.isBlank()) {
-                    Toast.makeText(
-                        this@RequestRideActivity,
-                        "Please fill all fields",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                // Verificação se algum campo está em branco e exibe erro específico em cada campo
+                var hasError = false
+                if (customerId.isBlank()) {
+                    tilCustomerId.error = "Campo obrigatório"
+                    hasError = true
+                } else {
+                    tilCustomerId.error = null
+                }
+
+                if (origin.isBlank()) {
+                    tilOrigin.error = "Campo obrigatório"
+                    hasError = true
+                } else {
+                    tilOrigin.error = null
+                }
+
+                if (destination.isBlank()) {
+                    tilDestination.error = "Campo obrigatório"
+                    hasError = true
+                } else {
+                    tilDestination.error = null
+                }
+
+                // Se algum campo estiver vazio, não prossegue com a estimativa da corrida
+                if (hasError) {
                     return@setOnClickListener
                 }
 
+                // Chama o ViewModel para estimar a corrida
                 viewModel.estimateRide(customerId, origin, destination)
             }
         }
 
+        // Observa a resposta da estimativa
         viewModel.rideOptions.observe(this) { rideOptions ->
             rideOptions?.let {
                 val intent = Intent(this@RequestRideActivity, RideOptionsActivity::class.java)
@@ -54,10 +75,10 @@ class RequestRideActivity : AppCompatActivity() {
             }
         }
 
+        // Observa a mensagem de erro
         viewModel.errorMessage.observe(this) { errorMessage ->
+            // Exibe a mensagem de erro para o usuário
             Toast.makeText(this@RequestRideActivity, errorMessage, Toast.LENGTH_SHORT).show()
         }
-
     }
-
 }

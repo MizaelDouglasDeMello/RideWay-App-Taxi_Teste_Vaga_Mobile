@@ -7,10 +7,10 @@ import androidx.lifecycle.viewModelScope
 import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.data.api.ApiClient
 import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.data.model.Ride
 import kotlinx.coroutines.launch
-
 class RideHistoryViewModel : ViewModel() {
 
     private val apiClient = ApiClient.apiService
+
 
     val customerId = MutableLiveData<String>()
     private val _driverId = MutableLiveData<Int?>()
@@ -18,7 +18,9 @@ class RideHistoryViewModel : ViewModel() {
 
     val rideHistory = MutableLiveData<List<Ride>>()
     private val isLoading = MutableLiveData<Boolean>()
-    private val errorMessage = MutableLiveData<String?>()
+
+    private val _errorMessage = MutableLiveData<String?>()
+    val errorMessage: LiveData<String?> = _errorMessage
 
     fun setDriverId(driverId: Int?) {
         _driverId.value = driverId
@@ -32,13 +34,14 @@ class RideHistoryViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     rideHistory.value = response.body()?.rides
                 } else {
-                    errorMessage.value = "Erro ao buscar histórico de viagens"
+                    _errorMessage.value = "Erro ao buscar histórico de viagens"
                 }
             } catch (e: Exception) {
-                errorMessage.value = "Erro de conexão"
+                _errorMessage.value = "Erro de conexão: ${e.localizedMessage}"
             } finally {
                 isLoading.value = false
             }
         }
     }
 }
+

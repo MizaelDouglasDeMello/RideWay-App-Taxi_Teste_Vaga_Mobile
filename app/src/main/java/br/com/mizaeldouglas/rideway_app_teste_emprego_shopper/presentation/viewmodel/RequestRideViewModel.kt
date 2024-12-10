@@ -20,24 +20,31 @@ class RequestRideViewModel : ViewModel() {
     fun estimateRide(customerId: String, origin: String, destination: String) {
         viewModelScope.launch {
             try {
+                // Verificando se os parâmetros não estão vazios antes de fazer a requisição
+                if (customerId.isBlank() || origin.isBlank() || destination.isBlank()) {
+                    _errorMessage.value = "All fields must be filled."
+                    return@launch
+                }
+
                 val response = ApiClient.apiService.estimateRide(
                     EstimateRideRequest(customerId, origin, destination)
                 )
+
                 if (response.isSuccessful) {
                     val body = response.body()
                     if (body != null) {
                         _rideOptions.value = body
                     } else {
-                        _errorMessage.value = "Error: No data received"
+                        _errorMessage.value = "Error: No data received from the server."
                     }
                 } else {
                     _errorMessage.value = "Error: ${response.message()}"
                 }
             } catch (e: Exception) {
-                _errorMessage.value = "An error occurred: ${e.message}"
+                // Catching any exception that might occur (e.g., network error)
+                _errorMessage.value = "An error occurred: ${e.localizedMessage}"
             }
         }
-
     }
-
 }
+

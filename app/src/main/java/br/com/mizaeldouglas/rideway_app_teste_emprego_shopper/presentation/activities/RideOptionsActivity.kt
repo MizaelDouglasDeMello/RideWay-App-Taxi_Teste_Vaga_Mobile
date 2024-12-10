@@ -22,7 +22,6 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomsheet.BottomSheetDialog
-
 class RideOptionsActivity : AppCompatActivity(), OnMapReadyCallback, RideOptionsAdapter.OnOptionSelectedListener {
 
     private lateinit var rideOptionsViewModel: RideOptionsViewModel
@@ -44,21 +43,24 @@ class RideOptionsActivity : AppCompatActivity(), OnMapReadyCallback, RideOptions
 
         val rideOptions = intent.getParcelableArrayListExtra<DriverOption>("rideOptions") ?: listOf()
         val rideResponse = intent.getParcelableExtra<EstimateRideResponse>("rideResponse")!!
-        rideOptionsViewModel.loadRideData(rideOptions, rideResponse)
 
+        rideOptionsViewModel.loadRideData(rideOptions, rideResponse)
         setupObservers()
         setupRecyclerView()
     }
 
     private fun setupObservers() {
-
+        // Observando o histórico de opções de viagem
         rideOptionsViewModel.rideOptions.observe(this) { options ->
-            binding.tvRideSummary.text = "Found ${options.size} options for your ride"
+            binding.tvRideSummary.text = "Encontradas ${options.size} opções para sua corrida"
             (binding.rvRideOptions.adapter as RideOptionsAdapter).updateData(options)
         }
 
+        // Observando mensagens de erro via Toast
         rideOptionsViewModel.toastMessage.observe(this) { message ->
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+            if (message.isNotBlank()) {
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+            }
         }
 
         rideOptionsViewModel.selectedOption.observe(this) { option ->
@@ -69,11 +71,8 @@ class RideOptionsActivity : AppCompatActivity(), OnMapReadyCallback, RideOptions
         rideOptionsViewModel.navigateToRideHistory.observe(this) { shouldNavigate ->
             shouldNavigate?.let {
                 if (it) {
-                    // Navega para a tela RideHistoryActivity
                     val intent = Intent(this, RideHistoryActivity::class.java)
                     startActivity(intent)
-
-                    // Resetando o evento de navegação
                     rideOptionsViewModel.onNavigateToRideHistoryHandled()
                 }
             }
@@ -121,9 +120,9 @@ class RideOptionsActivity : AppCompatActivity(), OnMapReadyCallback, RideOptions
         val bottomSheetDialog = BottomSheetDialog(this)
         val bottomSheetView = layoutInflater.inflate(R.layout.layout_driver_info_bottom_sheet, null)
 
-        bottomSheetView.findViewById<TextView>(R.id.tvDriverName).text = "Driver: ${option.name}"
-        bottomSheetView.findViewById<TextView>(R.id.tvRidePrice).text = "Price: $${option.value}"
-        bottomSheetView.findViewById<TextView>(R.id.tvVehicle).text = "Vehicle: ${option.vehicle}"
+        bottomSheetView.findViewById<TextView>(R.id.tvDriverName).text = "Motorista: ${option.name}"
+        bottomSheetView.findViewById<TextView>(R.id.tvRidePrice).text = "Preço: $${option.value}"
+        bottomSheetView.findViewById<TextView>(R.id.tvVehicle).text = "Veículo: ${option.vehicle}"
 
         val btnAcceptRide = bottomSheetView.findViewById<Button>(R.id.btnAcceptRide)
         btnAcceptRide.setOnClickListener {

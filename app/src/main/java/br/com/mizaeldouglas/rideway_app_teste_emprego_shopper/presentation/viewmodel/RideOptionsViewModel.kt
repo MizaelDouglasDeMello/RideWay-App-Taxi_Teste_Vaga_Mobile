@@ -10,7 +10,6 @@ import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.data.model.Driver
 import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.data.model.DriverOption
 import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.data.model.EstimateRideResponse
 import kotlinx.coroutines.launch
-
 class RideOptionsViewModel : ViewModel() {
 
     private val _rideOptions = MutableLiveData<List<DriverOption>>()
@@ -28,10 +27,6 @@ class RideOptionsViewModel : ViewModel() {
     private val _navigateToRideHistory = MutableLiveData<Boolean>()
     val navigateToRideHistory: LiveData<Boolean> = _navigateToRideHistory
 
-
-
-
-
     fun loadRideData(rideOptions: List<DriverOption>, rideResponse: EstimateRideResponse?) {
         _rideOptions.value = rideOptions
         _rideResponse.value = rideResponse
@@ -47,11 +42,13 @@ class RideOptionsViewModel : ViewModel() {
             val selectedOptionValue = _selectedOption.value ?: return@launch
 
             try {
+                // Verificação se a origem é a mesma que o destino
                 if (rideResponseValue.origin == rideResponseValue.destination) {
-                    _toastMessage.value = "Error: Destination cannot be the same as the origin."
+                    _toastMessage.value = "Erro: A origem não pode ser igual ao destino."
                     return@launch
                 }
 
+                // Validação da distância para o motorista selecionado
                 val isDistanceValid = when (selectedOptionValue.id) {
                     1 -> rideResponseValue.distance in 1.0..4.0
                     2 -> rideResponseValue.distance in 5.0..9.0
@@ -60,7 +57,7 @@ class RideOptionsViewModel : ViewModel() {
                 }
 
                 if (!isDistanceValid) {
-                    _toastMessage.value = "Error: Distance is invalid for the selected driver."
+                    _toastMessage.value = "Erro: A distância é inválida para o motorista selecionado."
                     return@launch
                 }
 
@@ -77,22 +74,24 @@ class RideOptionsViewModel : ViewModel() {
                     value = selectedOptionValue.value
                 )
 
+                // Tentando realizar a confirmação da corrida
                 val response = ApiClient.apiService.confirmRide(request)
 
                 if (response.isSuccessful && response.body()?.success == true) {
                     _toastMessage.value = "Corrida confirmada com ${selectedOptionValue.name}"
                     _navigateToRideHistory.value = true
-
                 } else {
-                    _toastMessage.value = "Failed to confirm ride: ${response.errorBody()?.string() ?: "Unknown error"}"
+                    _toastMessage.value = "Falha ao confirmar corrida: ${response.errorBody()?.string() ?: "Erro desconhecido"}"
                 }
             } catch (e: Exception) {
-                _toastMessage.value = "An error occurred: ${e.message}"
+                // Captura de erro de exceção e exibição de mensagem de erro
+                _toastMessage.value = "Ocorreu um erro: ${e.localizedMessage}"
             }
         }
     }
+
     // Função para resetar o evento de navegação
     fun onNavigateToRideHistoryHandled() {
-        _navigateToRideHistory.value
+        _navigateToRideHistory.value = false
     }
 }
