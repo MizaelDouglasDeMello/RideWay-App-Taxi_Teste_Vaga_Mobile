@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tvDriverName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Driver Name"
+        android:textStyle="bold"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tvRidePrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Price"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tvVehicle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Vehicle"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/btnAcceptRide"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Accept Ride"
+        android:backgroundTint="#000000"
+        android:textColor="@android:color/white" />
+
+</LinearLayout>

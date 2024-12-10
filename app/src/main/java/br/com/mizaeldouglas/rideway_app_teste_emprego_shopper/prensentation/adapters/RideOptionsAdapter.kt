@@ -6,10 +6,13 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.data.model.DriverOption
 import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.databinding.RecyclerViewItemBinding
-
 class RideOptionsAdapter(
-    private val onOptionSelected: (DriverOption) -> Unit
+    private val listener: OnOptionSelectedListener
 ) : RecyclerView.Adapter<RideOptionsAdapter.ViewHolder>() {
+
+    interface OnOptionSelectedListener {
+        fun onOptionSelected(option: DriverOption)
+    }
 
     private var options: List<DriverOption> = listOf()
 
@@ -27,8 +30,7 @@ class RideOptionsAdapter(
             binding.tvRating.text = "Rating: ${option.review.rating}"
             binding.tvPrice.text = "Price: $${option.value}"
             binding.btnChoose.setOnClickListener {
-                Toast.makeText(binding.root.context, "Selected option: ${option.name}", Toast.LENGTH_SHORT).show()
-                onOptionSelected(option)
+                listener.onOptionSelected(option)
             }
         }
     }
@@ -45,3 +47,4 @@ class RideOptionsAdapter(
 
     override fun getItemCount() = options.size
 }
+

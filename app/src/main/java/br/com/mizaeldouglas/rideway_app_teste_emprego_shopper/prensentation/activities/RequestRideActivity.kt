@@ -4,20 +4,18 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.data.api.ApiClient
-import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.data.model.EstimateRideRequest
 import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.databinding.ActivityRequestRideBinding
-import kotlinx.coroutines.launch
+import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.prensentation.viewmodel.RequestRideViewModel
 
 class RequestRideActivity : AppCompatActivity() {
+
     private val binding by lazy {
-        ActivityRequestRideBinding.inflate(
-            layoutInflater
-        )
+        ActivityRequestRideBinding.inflate(layoutInflater)
     }
 
+    private val viewModel: RequestRideViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,45 +41,21 @@ class RequestRideActivity : AppCompatActivity() {
                     return@setOnClickListener
                 }
 
-                lifecycleScope.launch {
-                    try {
-                        val response = ApiClient.apiService.estimateRide(
-                            EstimateRideRequest(customerId, origin, destination)
-                        )
-                        if (response.isSuccessful) {
-                            val rideOptions = response.body()
-
-                            if (rideOptions != null) {
-                                Log.i("rideOptionsDuration", rideOptions.options.toString())
-
-                                val intent = Intent(
-                                    this@RequestRideActivity,
-                                    RideOptionsActivity::class.java
-                                )
-                                intent.putExtra(
-                                    "rideResponse",
-                                    rideOptions
-                                )
-                                intent.putExtra("rideOptions", ArrayList(rideOptions.options))
-                                startActivity(intent)
-                            }
-                        } else {
-                            Toast.makeText(
-                                this@RequestRideActivity,
-                                "Error: ${response.message()}",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    } catch (e: Exception) {
-                        Toast.makeText(
-                            this@RequestRideActivity,
-                            "An error occurred",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        Log.e("RequestRideActivityTrue", "Error while estimating ride", e)
-                    }
-                }
+                viewModel.estimateRide(customerId, origin, destination)
             }
+        }
+
+        viewModel.rideOptions.observe(this) { rideOptions ->
+            rideOptions?.let {
+                val intent = Intent(this@RequestRideActivity, RideOptionsActivity::class.java)
+                intent.putExtra("rideResponse", it)
+                intent.putExtra("rideOptions", ArrayList(it.options))
+                startActivity(intent)
+            }
+        }
+
+        viewModel.errorMessage.observe(this) { errorMessage ->
+            Toast.makeText(this@RequestRideActivity, errorMessage, Toast.LENGTH_SHORT).show()
         }
     }
 }

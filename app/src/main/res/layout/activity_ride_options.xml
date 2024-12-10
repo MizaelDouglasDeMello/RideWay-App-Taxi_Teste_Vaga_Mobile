@@ -31,12 +31,5 @@
         android:dividerHeight="1dp"
         tools:listitem="@layout/recycler_view_item" />
 
-    <Button
-        android:id="@+id/btnConfirmOption"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="confirm"
-        android:visibility="gone" />
 
 </LinearLayout>
