@@ -4,20 +4,26 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.data.api.ApiClient
 import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.data.model.Ride
+import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.data.repository.IRideRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-class RideHistoryViewModel : ViewModel() {
+import javax.inject.Inject
 
-    private val apiClient = ApiClient.apiService
-
+@HiltViewModel
+class RideHistoryViewModel @Inject constructor(
+    private val rideRepository: IRideRepository
+) : ViewModel() {
 
     val customerId = MutableLiveData<String>()
     private val _driverId = MutableLiveData<Int?>()
     val driverId: LiveData<Int?> = _driverId
 
-    val rideHistory = MutableLiveData<List<Ride>>()
-    private val isLoading = MutableLiveData<Boolean>()
+    private val _rideHistory = MutableLiveData<List<Ride>>()
+    val rideHistory: LiveData<List<Ride>> = _rideHistory
+
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
 
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?> = _errorMessage
@@ -28,20 +34,23 @@ class RideHistoryViewModel : ViewModel() {
 
     fun fetchRideHistory() {
         viewModelScope.launch {
-            isLoading.value = true
+            _isLoading.value = true
             try {
-                val response = apiClient.getRideHistory(customerId.value.orEmpty(), driverId.value)
+                val customerIdValue = customerId.value.orEmpty()
+                val driverIdValue = driverId.value
+
+                val response = rideRepository.getRideHistory(customerIdValue, driverIdValue)
                 if (response.isSuccessful) {
-                    rideHistory.value = response.body()?.rides
+                    _rideHistory.value = response.body()?.rides
+                    _errorMessage.value = null
                 } else {
-                    _errorMessage.value = "Erro ao buscar histórico de viagens"
+                    _errorMessage.value = "Erro ao buscar histórico de viagens: ${response.message()}"
                 }
             } catch (e: Exception) {
                 _errorMessage.value = "Erro de conexão: ${e.localizedMessage}"
             } finally {
-                isLoading.value = false
+                _isLoading.value = false
             }
         }
     }
 }
-

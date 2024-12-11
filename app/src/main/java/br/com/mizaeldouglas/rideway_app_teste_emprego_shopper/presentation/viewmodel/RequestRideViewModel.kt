@@ -4,12 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.data.api.ApiClient
 import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.data.model.EstimateRideRequest
 import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.data.model.EstimateRideResponse
+import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.data.repository.IRideRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RequestRideViewModel : ViewModel() {
+@HiltViewModel
+class RequestRideViewModel @Inject constructor(
+    private val rideRepository: IRideRepository
+) : ViewModel() {
 
     private val _rideOptions = MutableLiveData<EstimateRideResponse?>()
     val rideOptions: LiveData<EstimateRideResponse?> = _rideOptions
@@ -25,9 +30,8 @@ class RequestRideViewModel : ViewModel() {
                     return@launch
                 }
 
-                val response = ApiClient.apiService.estimateRide(
-                    EstimateRideRequest(customerId, origin, destination)
-                )
+                val request = EstimateRideRequest(customerId, origin, destination)
+                val response = rideRepository.estimateRide(request)
 
                 if (response.isSuccessful) {
                     val body = response.body()
@@ -45,4 +49,5 @@ class RequestRideViewModel : ViewModel() {
         }
     }
 }
+
 
