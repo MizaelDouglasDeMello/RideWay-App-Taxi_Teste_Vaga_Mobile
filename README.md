@@ -38,7 +38,7 @@ interface do usuário, tornando o código mais organizado, testável e manutení
 1. Clone o
    repositório: `git clone https://github.com/seu-usuario/RideWay-App_Teste_Emprego_Shopper.git`
 2. Abra o projeto no Android Studio.
-3. Configure as credenciais da API do Google Maps no arquivo `local.properties` `GOOGLE_MAPS_API_KEY={Minha APiKEy}`.
+3. Configure as credenciais da API do Google Maps no arquivo `local.properties` <br> `GOOGLE_MAPS_API_KEY={Minha APiKEy}`.
 4. Execute o aplicativo em um emulador ou dispositivo físico.
 
 ## Uso
