@@ -6,12 +6,6 @@ import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.data.model.Estimat
 import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.data.model.EstimateRideResponse
 import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.data.model.RideHistoryResponse
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.PATCH
-import retrofit2.http.POST
-import retrofit2.http.Path
-import retrofit2.http.Query
 
 interface IRideRepository {
     suspend fun estimateRide(request: EstimateRideRequest): Response<EstimateRideResponse>

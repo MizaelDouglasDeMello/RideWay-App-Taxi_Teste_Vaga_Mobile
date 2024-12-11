@@ -41,13 +41,20 @@ class RequestRideViewModel @Inject constructor(
                         _errorMessage.value = "Error: No data received from the server."
                     }
                 } else {
-                    _errorMessage.value = "Error: ${response.message()}"
+                    // Tratamento específico para erro 400 (ID de cliente inválido)
+                    if (response.code() == 400) {
+                        _errorMessage.value = "Error: Invalid customer ID"
+                    } else {
+                        _errorMessage.value = "Error: ${response.message()}"
+                    }
                 }
             } catch (e: Exception) {
                 _errorMessage.value = "An error occurred: ${e.localizedMessage}"
             }
         }
     }
+
+
 }
 
 

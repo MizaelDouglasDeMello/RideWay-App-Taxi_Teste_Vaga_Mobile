@@ -33,24 +33,27 @@ class RideHistoryViewModel @Inject constructor(
     }
 
     fun fetchRideHistory() {
-        viewModelScope.launch {
-            _isLoading.value = true
-            try {
-                val customerIdValue = customerId.value.orEmpty()
-                val driverIdValue = driverId.value
+        _isLoading.value = true
+        val customerIdValue = customerId.value.orEmpty()
+        val driverIdValue = driverId.value
 
+        viewModelScope.launch {
+            try {
                 val response = rideRepository.getRideHistory(customerIdValue, driverIdValue)
                 if (response.isSuccessful) {
-                    _rideHistory.value = response.body()?.rides
+                    _rideHistory.value = response.body()?.rides ?: emptyList() // Sempre atualiza com uma lista, mesmo que vazia
                     _errorMessage.value = null
                 } else {
-                    _errorMessage.value = "Erro ao buscar histórico de viagens: ${response.message()}"
+                    _rideHistory.value = emptyList() // Garante consistência
+                    _errorMessage.value = "Erro ao buscar histórico de viagens: ${response.errorBody()?.string() ?: response.message()}"
                 }
             } catch (e: Exception) {
+                _rideHistory.value = emptyList() // Atualiza em caso de exceção também
                 _errorMessage.value = "Erro de conexão: ${e.localizedMessage}"
             } finally {
                 _isLoading.value = false
             }
         }
     }
+
 }
