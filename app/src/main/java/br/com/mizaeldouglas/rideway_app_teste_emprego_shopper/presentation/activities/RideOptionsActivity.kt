@@ -22,6 +22,10 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import dagger.hilt.android.AndroidEntryPoint
+
+
+@AndroidEntryPoint
 class RideOptionsActivity : AppCompatActivity(), OnMapReadyCallback, RideOptionsAdapter.OnOptionSelectedListener {
 
     private lateinit var rideOptionsViewModel: RideOptionsViewModel

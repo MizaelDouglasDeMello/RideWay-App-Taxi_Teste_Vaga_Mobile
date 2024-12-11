@@ -9,7 +9,9 @@ import androidx.lifecycle.ViewModelProvider
 import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.databinding.ActivityRideHistoryBinding
 import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.presentation.adapters.RideHistoryAdapter
 import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.presentation.viewmodel.RideHistoryViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RideHistoryActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRideHistoryBinding

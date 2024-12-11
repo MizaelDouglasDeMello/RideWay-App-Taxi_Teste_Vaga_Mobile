@@ -8,7 +8,9 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.databinding.ActivityRequestRideBinding
 import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.presentation.viewmodel.RequestRideViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RequestRideActivity : AppCompatActivity() {
 
     private val binding by lazy {
