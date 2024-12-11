@@ -45,9 +45,9 @@ interface do usuário, tornando o código mais organizado, testável e manutení
 
 1. Abra o aplicativo.
 2. Informe o endereço de origem e destino.
-- Exemplos ```Av. Paulista, 1538 - Bela Vista, São Paulo - SP, 01310-200```
+- **Exemplos Origem** ```Av. Paulista, 1538 - Bela Vista, São Paulo - SP, 01310-200```
+- **Exemplos Destino** ```Av. Pres. Kenedy, 2385 - Remédios, Osasco - SP, 02675-031``` - ```Av. Thomas Edison, 365 - Barra Funda, São Paulo - SP, 01140-000``` - ```Av. Brasil, 2033 - Jardim America, São Paulo - SP, 01431-001```
 3. Selecione a opção de veículo desejada.
-- Exemplos ```Av. Pres. Kenedy, 2385 - Remédios, Osasco - SP, 02675-031``` - ```Av. Thomas Edison, 365 - Barra Funda, São Paulo - SP, 01140-000``` - ```Av. Brasil, 2033 - Jardim America, São Paulo - SP, 01431-001```
 4. Confirme a solicitação de corrida.
 5. Acompanhe o status da corrida no mapa.
 6. Após a corrida, visualize os detalhes no histórico de corridas.
