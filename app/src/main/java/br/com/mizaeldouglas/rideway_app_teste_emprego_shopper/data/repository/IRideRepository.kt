@@ -14,16 +14,10 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface IRideRepository {
-
-    @POST("ride/estimate")
-    suspend fun estimateRide(@Body request: EstimateRideRequest): Response<EstimateRideResponse>
-
-    @PATCH("ride/confirm")
-    suspend fun confirmRide(@Body request: ConfirmRideRequest): Response<ConfirmRideResponse>
-
-    @GET("ride/{customer_id}")
+    suspend fun estimateRide(request: EstimateRideRequest): Response<EstimateRideResponse>
+    suspend fun confirmRide(request: ConfirmRideRequest): Response<ConfirmRideResponse>
     suspend fun getRideHistory(
-        @Path("customer_id") customerId: String,
-        @Query("driver_id") driverId: Int? = null
+        customerId: String,
+        driverId: Int? = null
     ): Response<RideHistoryResponse>
 }
