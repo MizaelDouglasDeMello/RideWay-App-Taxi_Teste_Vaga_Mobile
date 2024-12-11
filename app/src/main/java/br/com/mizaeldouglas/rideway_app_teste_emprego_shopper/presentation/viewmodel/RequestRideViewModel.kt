@@ -20,7 +20,6 @@ class RequestRideViewModel : ViewModel() {
     fun estimateRide(customerId: String, origin: String, destination: String) {
         viewModelScope.launch {
             try {
-                // Verificando se os parâmetros não estão vazios antes de fazer a requisição
                 if (customerId.isBlank() || origin.isBlank() || destination.isBlank()) {
                     _errorMessage.value = "All fields must be filled."
                     return@launch
@@ -41,7 +40,6 @@ class RequestRideViewModel : ViewModel() {
                     _errorMessage.value = "Error: ${response.message()}"
                 }
             } catch (e: Exception) {
-                // Catching any exception that might occur (e.g., network error)
                 _errorMessage.value = "An error occurred: ${e.localizedMessage}"
             }
         }
