@@ -44,19 +44,20 @@ android {
 }
 
 dependencies {
-    implementation ("com.google.android.gms:play-services-maps:18.1.0")
-    implementation ("com.google.android.gms:play-services-location:21.0.1")
-    implementation ("androidx.activity:activity-ktx:1.9.3")
+    implementation("com.google.android.gms:play-services-maps:18.1.0")
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+    implementation("androidx.activity:activity-ktx:1.9.3")
 
 
-    implementation (libs.androidx.lifecycle.viewmodel.ktx)
-    implementation (libs.androidx.lifecycle.livedata.ktx)
-    implementation (libs.retrofit)
-    implementation (libs.converter.gson)
-    implementation (libs.material.v190)
-    implementation (libs.picasso)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.material.v190)
+    implementation(libs.picasso)
 
     implementation(libs.hilt.android)
+    testImplementation(libs.junit.junit)
     kapt(libs.hilt.android.compiler)
 
     implementation(libs.androidx.core.ktx)
@@ -67,6 +68,13 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // Dependências para testes unitários
+    testImplementation("org.mockito:mockito-core:4.11.0")
+    testImplementation("io.mockk:mockk:1.13.2")
+
+    // Para testes com LiveData
+    testImplementation("androidx.arch.core:core-testing:2.2.0")
 }
 kapt {
     correctErrorTypes = true
