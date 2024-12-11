@@ -1,5 +1,6 @@
 package br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.di
 
+import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.data.api.IApiService
 import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.data.repository.IRideRepository
 import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.data.repository.RideRepositoryImpl
 import dagger.Module
@@ -15,7 +16,7 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideRideRepository(retrofit: Retrofit): IRideRepository {
-        return RideRepositoryImpl(retrofit)
+    fun provideRideRepository(apiService: IApiService): IRideRepository {
+        return RideRepositoryImpl(apiService)
     }
 }

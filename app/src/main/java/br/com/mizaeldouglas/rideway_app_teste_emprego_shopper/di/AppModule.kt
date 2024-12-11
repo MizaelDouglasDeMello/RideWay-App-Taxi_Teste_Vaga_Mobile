@@ -1,5 +1,6 @@
 package br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.di
 
+import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.data.api.IApiService
 import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.utils.Constants
 import dagger.Module
 import dagger.Provides
@@ -22,11 +23,17 @@ object AppModule {
             .client(okHttpClient)
             .build()
     }
+
     @Provides
     fun provideOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
             .build()
+    }
+
+    @Provides
+    fun provideApiService(retrofit: Retrofit): IApiService {
+        return retrofit.create(IApiService::class.java)
     }
 }
