@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.picasso)
 
     implementation(libs.hilt.android)
+    implementation(libs.androidx.junit.ktx)
     testImplementation(libs.junit.junit)
     kapt(libs.hilt.android.compiler)
 
@@ -69,12 +70,21 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    // Dependências para testes unitários
+    // Dependências do Mockito
     testImplementation("org.mockito:mockito-core:4.11.0")
-    testImplementation("io.mockk:mockk:1.13.2")
+    testImplementation("org.mockito:mockito-inline:4.8.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
 
-    // Para testes com LiveData
+    // Dependência para testes com LiveData
     testImplementation("androidx.arch.core:core-testing:2.2.0")
+
+    // Hilt e outras dependências para testes
+    testImplementation("com.google.dagger:hilt-android-testing:2.44")
+    testImplementation("com.google.truth:truth:1.1.3")
+
+    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+
+
 }
 kapt {
     correctErrorTypes = true
