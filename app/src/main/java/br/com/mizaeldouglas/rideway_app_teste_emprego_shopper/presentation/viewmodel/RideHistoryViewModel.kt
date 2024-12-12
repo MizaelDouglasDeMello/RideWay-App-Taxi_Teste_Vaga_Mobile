@@ -1,10 +1,14 @@
 package br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.presentation.viewmodel
 
+import android.view.View
+import android.widget.TextView
+import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.data.model.Ride
+import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.data.model.RideHistoryResponse
 import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.data.repository.IRideRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -28,32 +32,68 @@ class RideHistoryViewModel @Inject constructor(
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?> = _errorMessage
 
+    private val _selectedDriverName = MutableLiveData<String?>()
+    val selectedDriverName: LiveData<String?> = _selectedDriverName
+
     fun setDriverId(driverId: Int?) {
         _driverId.value = driverId
+        _selectedDriverName.value = getDriverNameById(driverId)
     }
 
     fun fetchRideHistory() {
-        _isLoading.value = true
         val customerIdValue = customerId.value.orEmpty()
-        val driverIdValue = driverId.value
 
+        if (customerIdValue.isBlank()) {
+            _errorMessage.value = "Customer ID não pode estar vazio."
+            return
+        }
+
+        _isLoading.value = true
         viewModelScope.launch {
             try {
-                val response = rideRepository.getRideHistory(customerIdValue, driverIdValue)
-                if (response.isSuccessful) {
-                    _rideHistory.value = response.body()?.rides ?: emptyList() // Sempre atualiza com uma lista, mesmo que vazia
-                    _errorMessage.value = null
-                } else {
-                    _rideHistory.value = emptyList() // Garante consistência
-                    _errorMessage.value = "Erro ao buscar histórico de viagens: ${response.errorBody()?.string() ?: response.message()}"
-                }
+                val response = rideRepository.getRideHistory(customerIdValue, driverId.value)
+                handleResponse(response)
             } catch (e: Exception) {
-                _rideHistory.value = emptyList() // Atualiza em caso de exceção também
-                _errorMessage.value = "Erro de conexão: ${e.localizedMessage}"
+                handleException(e)
             } finally {
                 _isLoading.value = false
             }
         }
     }
 
+    private fun handleResponse(response: retrofit2.Response<*>?) {
+        if (response?.isSuccessful == true) {
+            val rides = (response.body() as? RideHistoryResponse)?.rides.orEmpty()
+            _rideHistory.value = rides
+            _errorMessage.value = null
+        } else {
+            _rideHistory.value = emptyList()
+            _errorMessage.value = "Erro ao buscar histórico: ${response?.errorBody()?.string() ?: response?.message()}"
+        }
+    }
+
+    private fun getDriverNameById(driverId: Int?): String {
+        return when (driverId) {
+            1 -> "James Bond"
+            2 -> "Homer Simpson"
+            3 -> "Dominic Toretto"
+            else -> ""
+        }
+    }
+
+    private fun handleException(exception: Exception) {
+        _rideHistory.value = emptyList()
+        _errorMessage.value = "Erro de conexão: ${exception.localizedMessage}"
+    }
+
+    @BindingAdapter("app:driverVisibility")
+    fun setDriverVisibility(view: TextView, driverName: String?, selectedDriverName: String?) {
+        if (driverName != selectedDriverName) {
+            view.visibility = View.VISIBLE
+        } else {
+            view.visibility = View.GONE
+        }
+    }
+
 }
+

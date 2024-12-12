@@ -23,30 +23,24 @@ class RequestRideViewModel @Inject constructor(
     val errorMessage: LiveData<String> = _errorMessage
 
     fun estimateRide(customerId: String, origin: String, destination: String) {
+        if (customerId.isBlank() || origin.isBlank() || destination.isBlank()) {
+            _errorMessage.value = "All fields must be filled."
+            return
+        }
+
+        val request = EstimateRideRequest(customerId, origin, destination)
+        performEstimateRide(request)
+    }
+
+    private fun performEstimateRide(request: EstimateRideRequest) {
         viewModelScope.launch {
             try {
-                if (customerId.isBlank() || origin.isBlank() || destination.isBlank()) {
-                    _errorMessage.value = "All fields must be filled."
-                    return@launch
-                }
-
-                val request = EstimateRideRequest(customerId, origin, destination)
                 val response = rideRepository.estimateRide(request)
 
                 if (response.isSuccessful) {
-                    val body = response.body()
-                    if (body != null) {
-                        _rideOptions.value = body
-                    } else {
-                        _errorMessage.value = "Error: No data received from the server."
-                    }
+                    handleSuccessfulResponse(response.body())
                 } else {
-                    // Tratamento específico para erro 400 (ID de cliente inválido)
-                    if (response.code() == 400) {
-                        _errorMessage.value = "Error: Invalid customer ID"
-                    } else {
-                        _errorMessage.value = "Error: ${response.message()}"
-                    }
+                    handleErrorResponse(response.code(), response.message())
                 }
             } catch (e: Exception) {
                 _errorMessage.value = "An error occurred: ${e.localizedMessage}"
@@ -54,7 +48,19 @@ class RequestRideViewModel @Inject constructor(
         }
     }
 
+    private fun handleSuccessfulResponse(body: EstimateRideResponse?) {
+        if (body != null) {
+            _rideOptions.value = body
+        } else {
+            _errorMessage.value = "Error: No data received from the server."
+        }
+    }
+
+    private fun handleErrorResponse(code: Int, message: String) {
+        _errorMessage.value = when (code) {
+            400 -> "Error: Invalid customer ID"
+            else -> "Error: $message"
+        }
+    }
 
 }
-
-

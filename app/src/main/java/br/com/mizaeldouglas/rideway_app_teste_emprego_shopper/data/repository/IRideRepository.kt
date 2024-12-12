@@ -8,6 +8,7 @@ import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.data.model.RideHis
 import retrofit2.Response
 
 interface IRideRepository {
+
     suspend fun estimateRide(request: EstimateRideRequest): Response<EstimateRideResponse>
     suspend fun confirmRide(request: ConfirmRideRequest): Response<ConfirmRideResponse>
     suspend fun getRideHistory(

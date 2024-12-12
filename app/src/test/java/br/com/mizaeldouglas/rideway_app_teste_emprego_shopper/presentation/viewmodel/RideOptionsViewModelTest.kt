@@ -47,7 +47,7 @@ class RideOptionsViewModelTest {
     @Test
     fun `Deve retornar sucesso ao aceitar corrida com motorista válido e distancia valida`() =
         runBlocking {
-            // Arrange
+
             val customerId = "CT01"
             val rideResponse = EstimateRideResponse(
                 origin = Location(10.0, 10.0),
@@ -75,10 +75,8 @@ class RideOptionsViewModelTest {
             )
             val selectedOption = rideResponse.options[0]
 
-            // Configurando corretamente o retorno do repositório
             whenever(rideRepository.confirmRide(any<ConfirmRideRequest>())).thenReturn(Response.success(ConfirmRideResponse(success = true)))
 
-            // Execute a lógica de selecionar a opção e aceitar a corrida
             viewModel.loadRideData(rideResponse.options, rideResponse)
             viewModel.selectOption(selectedOption)
 
@@ -86,7 +84,6 @@ class RideOptionsViewModelTest {
             viewModel.acceptRide(customerId)
             testDispatcher.scheduler.advanceUntilIdle()
 
-            // Captura o request enviado ao repositório
             val captor = argumentCaptor<ConfirmRideRequest>()
             verify(rideRepository).confirmRide(captor.capture())
 
@@ -97,7 +94,6 @@ class RideOptionsViewModelTest {
             assertThat(request.distance).isEqualTo(3.0)
             assertThat(request.driver.id).isEqualTo(selectedOption.id)
 
-            // Verifique os resultados do Toast e navegação
             val toastMessage = viewModel.toastMessage.getOrAwaitValue()
             val navigateToRideHistory = viewModel.navigateToRideHistory.getOrAwaitValue()
 
@@ -108,12 +104,12 @@ class RideOptionsViewModelTest {
 
     @Test
     fun `Deve retornar erro ao aceitar corrida com motorista válido e distância inválida`() = runBlocking {
-        // Arrange
+
         val customerId = "CT01"
         val rideResponse = EstimateRideResponse(
             origin = Location(10.0, 10.0),
             destination = Location(11.0, 11.0),
-            distance = 9.0, // Distância fora da faixa para DriverOption 1
+            distance = 9.0,
             duration = "15min",
             options = listOf(
                 DriverOption(
@@ -131,11 +127,9 @@ class RideOptionsViewModelTest {
         viewModel.loadRideData(rideResponse.options, rideResponse)
         viewModel.selectOption(selectedOption)
 
-        // Act
         viewModel.acceptRide(customerId)
         testDispatcher.scheduler.advanceUntilIdle()
 
-        // Assert
         val toastMessage = viewModel.toastMessage.getOrAwaitValue()
         val navigateToRideHistory = viewModel.navigateToRideHistory.getOrAwaitValue()
 
@@ -146,7 +140,7 @@ class RideOptionsViewModelTest {
 
     @Test
     fun `Deve retornar erro ao aceitar corrida com motorista inválido`() = runBlocking {
-        // Arrange
+
         val customerId = "CT01"
         val rideResponse = EstimateRideResponse(
             origin = Location(10.0, 10.0),
@@ -155,7 +149,7 @@ class RideOptionsViewModelTest {
             duration = "10min",
             options = listOf(
                 DriverOption(
-                    -1, // ID inválido
+                    -1,
                     "Motorista Inválido",
                     "Descrição",
                     "Carro X",
@@ -169,14 +163,11 @@ class RideOptionsViewModelTest {
         viewModel.loadRideData(rideResponse.options, rideResponse)
         viewModel.selectOption(selectedOption)
 
-        // Act
         viewModel.acceptRide(customerId)
 
-        // Aguardar a atualização das LiveData
-        testDispatcher.scheduler.advanceUntilIdle() // Garante que a corrotina tenha tempo para finalizar
+        testDispatcher.scheduler.advanceUntilIdle()
 
-        // Assert
-        val toastMessage = viewModel.toastMessage.getOrAwaitValue(time = 5, timeUnit = TimeUnit.SECONDS) // Aumentando o tempo de espera
+        val toastMessage = viewModel.toastMessage.getOrAwaitValue(time = 5, timeUnit = TimeUnit.SECONDS)
         val navigateToRideHistory = viewModel.navigateToRideHistory.getOrAwaitValue(time = 5, timeUnit = TimeUnit.SECONDS)
 
         assertThat(toastMessage).isEqualTo("Erro: Motorista inválido.")

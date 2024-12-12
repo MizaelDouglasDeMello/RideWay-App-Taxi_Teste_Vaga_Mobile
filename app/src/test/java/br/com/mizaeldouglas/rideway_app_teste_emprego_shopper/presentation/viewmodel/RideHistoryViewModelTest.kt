@@ -38,10 +38,10 @@ class RideHistoryViewModelTest {
         viewModel = RideHistoryViewModel(rideRepository)
     }
 
+
     @Test
     fun `CT01 - Deve retornar sucesso com lista aleatoria de viagens quando customerId for CT01 e driverId for nulo ou valido`() =
         runBlocking {
-            // Arrange
             val customerId = "CT01"
             val driverId = null
             val rideHistoryResponse = RideHistoryResponse(
@@ -58,11 +58,9 @@ class RideHistoryViewModelTest {
             viewModel.customerId.value = customerId
             viewModel.setDriverId(driverId)
 
-            // Act
             viewModel.fetchRideHistory()
             testDispatcher.scheduler.advanceUntilIdle()
 
-            // Assert
             val rideHistory = viewModel.rideHistory.getOrAwaitValue()
             val errorMessage = viewModel.errorMessage.getOrAwaitValue()
 
@@ -72,7 +70,7 @@ class RideHistoryViewModelTest {
 
     @Test
     fun `Deve retornar erro sem viagens salvas quando customerId for diferente de CT01`() = runBlocking {
-        // Arrange
+
         val customerId = "OutroID"
         val driverId = null
 
@@ -83,22 +81,19 @@ class RideHistoryViewModelTest {
         viewModel.customerId.value = customerId
         viewModel.setDriverId(driverId)
 
-        // Act
         viewModel.fetchRideHistory()
         testDispatcher.scheduler.advanceUntilIdle()
 
-        // Assert
-        val rideHistory = viewModel.rideHistory.getOrAwaitValue(time = 5) // Aumenta o limite de tempo se necessário
+        val rideHistory = viewModel.rideHistory.getOrAwaitValue(time = 5)
         val errorMessage = viewModel.errorMessage.getOrAwaitValue()
 
         assertThat(rideHistory).isEmpty()
-        assertThat(errorMessage).isEqualTo("Erro ao buscar histórico de viagens: Not Found")
+        assertThat(errorMessage).isEqualTo("Erro ao buscar histórico: Not Found") // Atualizado
     }
-
 
     @Test
     fun `Deve retornar erro de motorista inválido quando driverId for inválido`() = runBlocking {
-        // Arrange
+
         val customerId = "CT01"
         val driverId = -1
 
@@ -109,17 +104,16 @@ class RideHistoryViewModelTest {
         viewModel.customerId.value = customerId
         viewModel.setDriverId(driverId)
 
-        // Act
         viewModel.fetchRideHistory()
         testDispatcher.scheduler.advanceUntilIdle()
 
-        // Assert
         val rideHistory = viewModel.rideHistory.getOrAwaitValue(time = 5)
         val errorMessage = viewModel.errorMessage.getOrAwaitValue()
 
         assertThat(rideHistory).isEmpty()
-        assertThat(errorMessage).isEqualTo("Erro ao buscar histórico de viagens: Motorista inválido")
+        assertThat(errorMessage).isEqualTo("Erro ao buscar histórico: Motorista inválido") // Atualizado
     }
+
 
 }
 

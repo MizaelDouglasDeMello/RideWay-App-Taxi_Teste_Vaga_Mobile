@@ -5,13 +5,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.data.model.ConfirmRideRequest
+import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.data.model.ConfirmRideResponse
 import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.data.model.Driver
 import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.data.model.DriverOption
 import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.data.model.EstimateRideResponse
 import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.data.repository.IRideRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import retrofit2.Response
 import javax.inject.Inject
+
 @HiltViewModel
 class RideOptionsViewModel @Inject constructor(
     private val rideRepository: IRideRepository
@@ -46,42 +49,28 @@ class RideOptionsViewModel @Inject constructor(
             val rideResponseValue = _rideResponse.value
             val selectedOptionValue = _selectedOption.value
 
-            // Verifica se os valores estão disponíveis
             if (rideResponseValue == null || selectedOptionValue == null) {
                 _toastMessage.value = "Erro: Dados da corrida ou motorista não disponíveis."
                 return@launch
             }
 
-            // Verifica se o motorista é válido
             if (selectedOptionValue.id < 0) {
                 _toastMessage.value = "Erro: Motorista inválido."
-                _navigateToRideHistory.value = false // Garantir que a navegação não ocorra
+                _navigateToRideHistory.value = false
                 return@launch
             }
 
-            // Verifica a validade da distância com base no motorista selecionado
-            val isDistanceValid = isDistanceValidForDriver(selectedOptionValue.id, rideResponseValue.distance)
-
-            if (!isDistanceValid) {
+            if (!isDistanceValidForDriver(selectedOptionValue.id, rideResponseValue.distance)) {
                 _toastMessage.value = "Erro: A distância é inválida para o motorista selecionado."
                 _navigateToRideHistory.value = false
                 return@launch
             }
 
-            // Cria o pedido para confirmar a corrida
             val request = createConfirmRideRequest(customerId, rideResponseValue, selectedOptionValue)
 
-            // Envia o pedido para confirmar a corrida
             try {
                 val response = rideRepository.confirmRide(request)
-
-                if (response.isSuccessful && response.body()?.success == true) {
-                    _toastMessage.value = "Corrida confirmada com ${selectedOptionValue.name}"
-                    _navigateToRideHistory.value = true
-                } else {
-                    _toastMessage.value = "Falha ao confirmar corrida: ${response.errorBody()?.string() ?: "Erro desconhecido"}"
-                    _navigateToRideHistory.value = false
-                }
+                handleRideResponse(response, selectedOptionValue)
             } catch (e: Exception) {
                 _toastMessage.value = "Erro de conexão: ${e.message}"
                 _navigateToRideHistory.value = false
@@ -89,6 +78,15 @@ class RideOptionsViewModel @Inject constructor(
         }
     }
 
+    private fun handleRideResponse(response: Response<ConfirmRideResponse>, selectedOptionValue: DriverOption) {
+        if (response.isSuccessful && response.body()?.success == true) {
+            _toastMessage.value = "Corrida confirmada com ${selectedOptionValue.name}"
+            _navigateToRideHistory.value = true
+        } else {
+            _toastMessage.value = "Falha ao confirmar corrida: ${response.errorBody()?.string() ?: "Erro desconhecido"}"
+            _navigateToRideHistory.value = false
+        }
+    }
 
     private fun isDistanceValidForDriver(driverId: Int, distance: Double): Boolean {
         return when (driverId) {

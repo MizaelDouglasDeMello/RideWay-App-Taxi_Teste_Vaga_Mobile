@@ -79,6 +79,7 @@
 
         <!-- RecyclerView with padding and background -->
         <androidx.recyclerview.widget.RecyclerView
+            android:visibility="gone"
             android:id="@+id/rv_ride_history"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -90,6 +91,22 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/button_apply" />
+
+        <TextView
+            android:id="@+id/txtNotDrive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_block_24"
+            android:drawablePadding="8dp"
+            android:text="Motorista não realizou a viagem"
+            android:textAppearance="?attr/textAppearanceSubtitle1"
+            android:textColor="#FF0000"
+            android:textSize="20dp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/button_apply"
+            app:layout_constraintStart_toStartOf="@+id/button_apply"
+            app:layout_constraintTop_toBottomOf="@+id/button_apply" />
 
         <TextView
             android:id="@+id/textView2"

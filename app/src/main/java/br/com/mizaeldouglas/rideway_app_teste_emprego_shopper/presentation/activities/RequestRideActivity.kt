@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.data.model.EstimateRideResponse
 import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.databinding.ActivityRequestRideBinding
 import br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.presentation.viewmodel.RequestRideViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,63 +24,87 @@ class RequestRideActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        binding.floatingActionButtonRequest.setOnClickListener {
-            val intent = Intent(this, RideHistoryActivity::class.java)
-            startActivity(intent)
-        }
+        setupUI()
+        observeViewModel()
+    }
 
+    private fun setupUI() {
         with(binding) {
+            floatingActionButtonRequest.setOnClickListener {
+                navigateToRideHistory()
+            }
+
             btnEstimateRide.setOnClickListener {
-                val customerId = etCustomerId.text.toString()
-                val origin = etOrigin.text.toString()
-                val destination = etDestination.text.toString()
+                handleEstimateRide()
+            }
+        }
+    }
 
-                Log.i(
-                    "RequestRideActivityTrue",
-                    "Dados enviados: \ncustomerId=$customerId,\n origin=$origin, \ndestination=$destination"
-                )
+    private fun navigateToRideHistory() {
+        val intent = Intent(this, RideHistoryActivity::class.java)
+        startActivity(intent)
+    }
 
-                var hasError = false
-                if (customerId.isBlank()) {
-                    tilCustomerId.error = "Campo obrigatório"
-                    hasError = true
-                } else {
-                    tilCustomerId.error = null
-                }
+    private fun handleEstimateRide() {
+        with(binding) {
+            val customerId = etCustomerId.text.toString()
+            val origin = etOrigin.text.toString()
+            val destination = etDestination.text.toString()
 
-                if (origin.isBlank()) {
-                    tilOrigin.error = "Campo obrigatório"
-                    hasError = true
-                } else {
-                    tilOrigin.error = null
-                }
+            Log.i(
+                "RequestRideActivity",
+                "Dados enviados: \ncustomerId=$customerId,\n origin=$origin, \ndestination=$destination"
+            )
 
-                if (destination.isBlank()) {
-                    tilDestination.error = "Campo obrigatório"
-                    hasError = true
-                } else {
-                    tilDestination.error = null
-                }
-
-                if (hasError) {
-                    return@setOnClickListener
-                }
-
+            val hasError = validateInputs(customerId, origin, destination)
+            if (!hasError) {
                 viewModel.estimateRide(customerId, origin, destination)
             }
         }
+    }
 
+    private fun validateInputs(customerId: String, origin: String, destination: String): Boolean {
+        var hasError = false
+
+        binding.tilCustomerId.error = if (customerId.isBlank()) {
+            hasError = true
+            "Campo obrigatório"
+        } else null
+
+        binding.tilOrigin.error = if (origin.isBlank()) {
+            hasError = true
+            "Campo obrigatório"
+        } else null
+
+        binding.tilDestination.error = if (destination.isBlank()) {
+            hasError = true
+            "Campo obrigatório"
+        } else null
+
+        return hasError
+    }
+
+    private fun observeViewModel() {
         viewModel.rideOptions.observe(this) { rideOptions ->
             rideOptions?.let {
-                val intent = Intent(this@RequestRideActivity, RideOptionsActivity::class.java)
-                intent.putExtra("rideResponse", it)
-                intent.putExtra("rideOptions", ArrayList(it.options))
-                startActivity(intent)
+                navigateToRideOptions(it)
             }
         }
 
         viewModel.errorMessage.observe(this) { errorMessage ->
-            Toast.makeText(this@RequestRideActivity, errorMessage, Toast.LENGTH_SHORT).show()
+            showError(errorMessage)
         }
+    }
+
+    private fun navigateToRideOptions(rideResponse: EstimateRideResponse) {
+        val intent = Intent(this, RideOptionsActivity::class.java).apply {
+            putExtra("rideResponse", rideResponse)
+            putExtra("rideOptions", ArrayList(rideResponse.options))
+        }
+        startActivity(intent)
+    }
+
+    private fun showError(errorMessage: String?) {
+        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
     }
 }
