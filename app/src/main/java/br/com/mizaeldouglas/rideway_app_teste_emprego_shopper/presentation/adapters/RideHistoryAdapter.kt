@@ -19,14 +19,15 @@ class RideHistoryAdapter(private val onFilterComplete: (Boolean) -> Unit) : Recy
     }
 
     private fun filterRidesByDriver() {
-        filteredRides = if (selectedDriver.isNotEmpty()) {
-            rides.filter { it.driver.name == selectedDriver }
-        } else {
+        filteredRides = if (selectedDriver == "Todos" || selectedDriver.isEmpty()) {
             rides
+        } else {
+            rides.filter { it.driver.name == selectedDriver }
         }
 
         onFilterComplete(filteredRides.isNotEmpty())
     }
+
 
     class RideViewHolder(private val binding: RideItemBinding) :
         RecyclerView.ViewHolder(binding.root) {

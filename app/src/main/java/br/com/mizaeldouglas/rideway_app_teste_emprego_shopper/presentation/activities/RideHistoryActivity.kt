@@ -57,12 +57,16 @@ class RideHistoryActivity : AppCompatActivity() {
 
 
 
+
+
+
     private fun setupSpinner() {
-        val driverIds = arrayOf("Homer Simpson", "Dominic Toretto", "James Bond")
+        val driverIds = arrayOf("Todos", "Homer Simpson", "Dominic Toretto", "James Bond")
         val spinnerAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, driverIds)
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerDriver.adapter = spinnerAdapter
     }
+
 
     private fun setupObservers() {
         viewModel.errorMessage.observe(this) { errorMessage ->
@@ -105,7 +109,9 @@ class RideHistoryActivity : AppCompatActivity() {
             binding.errorDriver.visibility = View.VISIBLE
         } else {
             binding.errorDriver.visibility = View.GONE
-            val driverId = getDriverIdByName(selectedDriver)
+
+            // Atualize a lógica para lidar com "Todos"
+            val driverId = if (selectedDriver == "Todos") null else getDriverIdByName(selectedDriver)
             viewModel.setDriverId(driverId)
             viewModel.fetchRideHistory()
         }
