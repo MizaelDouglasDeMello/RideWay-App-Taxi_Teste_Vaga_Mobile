@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -98,9 +99,24 @@
             android:text="Historico de Viagens"
             android:textSize="24sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/textInputLayout_customer_id"
-            app:layout_constraintStart_toStartOf="@+id/textInputLayout_customer_id"
+            app:layout_constraintEnd_toEndOf="@+id/tilCustomersId"
+            app:layout_constraintStart_toStartOf="@+id/tilCustomersId"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:clickable="true"
+            android:tint="#FFFFFF"
+            app:backgroundTint="#000000"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:rippleColor="#FFFFFF"
+            app:srcCompat="@drawable/baseline_home_24" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

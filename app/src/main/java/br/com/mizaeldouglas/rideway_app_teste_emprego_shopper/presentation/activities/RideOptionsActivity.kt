@@ -48,6 +48,11 @@ class RideOptionsActivity : AppCompatActivity(), OnMapReadyCallback, RideOptions
         val rideOptions = intent.getParcelableArrayListExtra<DriverOption>("rideOptions") ?: listOf()
         val rideResponse = intent.getParcelableExtra<EstimateRideResponse>("rideResponse")!!
 
+        binding.floatingActionButtonRideOption.setOnClickListener {
+            val intent = Intent(this, RequestRideActivity::class.java)
+            startActivity(intent)
+        }
+
         rideOptionsViewModel.loadRideData(rideOptions, rideResponse)
         setupObservers()
         setupRecyclerView()

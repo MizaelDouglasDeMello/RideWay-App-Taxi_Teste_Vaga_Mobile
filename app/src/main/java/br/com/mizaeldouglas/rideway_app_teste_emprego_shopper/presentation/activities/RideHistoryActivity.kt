@@ -1,5 +1,6 @@
 package br.com.mizaeldouglas.rideway_app_teste_emprego_shopper.presentation.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
@@ -39,6 +40,11 @@ class RideHistoryActivity : AppCompatActivity() {
         val spinnerAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, driverIds)
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerDriver.adapter = spinnerAdapter
+
+        binding.floatingActionButton.setOnClickListener {
+            val intent = Intent(this, RequestRideActivity::class.java)
+            startActivity(intent)
+        }
 
         binding.buttonApply.setOnClickListener {
             val customerId = binding.etCustomerId.text.toString()

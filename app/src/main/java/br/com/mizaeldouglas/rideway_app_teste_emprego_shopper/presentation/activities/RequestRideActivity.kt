@@ -23,6 +23,11 @@ class RequestRideActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        binding.floatingActionButtonRequest.setOnClickListener {
+            val intent = Intent(this, RideHistoryActivity::class.java)
+            startActivity(intent)
+        }
+
         with(binding) {
             btnEstimateRide.setOnClickListener {
                 val customerId = etCustomerId.text.toString()
