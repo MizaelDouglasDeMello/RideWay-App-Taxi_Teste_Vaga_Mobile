@@ -86,14 +86,6 @@ class RideHistoryViewModel @Inject constructor(
         _errorMessage.value = "Erro de conexão: ${exception.localizedMessage}"
     }
 
-    @BindingAdapter("app:driverVisibility")
-    fun setDriverVisibility(view: TextView, driverName: String?, selectedDriverName: String?) {
-        if (driverName != selectedDriverName) {
-            view.visibility = View.VISIBLE
-        } else {
-            view.visibility = View.GONE
-        }
-    }
 
 }
 

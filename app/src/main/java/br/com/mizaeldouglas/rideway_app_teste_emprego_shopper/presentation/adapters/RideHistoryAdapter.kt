@@ -11,7 +11,6 @@ class RideHistoryAdapter(private val onFilterComplete: (Boolean) -> Unit) : Recy
     private var filteredRides: List<Ride> = listOf()
     private var selectedDriver: String = ""
 
-    // Método para atualizar os dados do RecyclerView
     fun updateData(newRides: List<Ride>, driverName: String) {
         this.rides = newRides
         this.selectedDriver = driverName
@@ -19,7 +18,6 @@ class RideHistoryAdapter(private val onFilterComplete: (Boolean) -> Unit) : Recy
         notifyDataSetChanged()
     }
 
-    // Método para filtrar as viagens de acordo com o motorista selecionado
     private fun filterRidesByDriver() {
         filteredRides = if (selectedDriver.isNotEmpty()) {
             rides.filter { it.driver.name == selectedDriver }
@@ -27,7 +25,6 @@ class RideHistoryAdapter(private val onFilterComplete: (Boolean) -> Unit) : Recy
             rides
         }
 
-        // Verifica se há viagens filtradas e aciona a visibilidade
         onFilterComplete(filteredRides.isNotEmpty())
     }
 
@@ -52,8 +49,8 @@ class RideHistoryAdapter(private val onFilterComplete: (Boolean) -> Unit) : Recy
     }
 
     override fun onBindViewHolder(holder: RideViewHolder, position: Int) {
-        holder.bind(filteredRides[position]) // Usando filteredRides para garantir que o filtro seja aplicado
+        holder.bind(filteredRides[position])
     }
 
-    override fun getItemCount() = filteredRides.size // Usando filteredRides aqui também
+    override fun getItemCount() = filteredRides.size
 }

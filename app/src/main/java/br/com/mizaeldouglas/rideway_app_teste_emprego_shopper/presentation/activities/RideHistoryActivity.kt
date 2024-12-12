@@ -34,7 +34,6 @@ class RideHistoryActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() {
         val adapter = RideHistoryAdapter { hasRides ->
-            // Atualiza a visibilidade da RecyclerView e da TextView
             if (hasRides) {
                 binding.rvRideHistory.visibility = View.VISIBLE
                 binding.txtNotDrive.visibility = View.GONE
@@ -107,8 +106,8 @@ class RideHistoryActivity : AppCompatActivity() {
         } else {
             binding.errorDriver.visibility = View.GONE
             val driverId = getDriverIdByName(selectedDriver)
-            viewModel.setDriverId(driverId)  // Atualiza o ID do motorista no ViewModel
-            viewModel.fetchRideHistory()  // Refaz a busca com o filtro de motorista
+            viewModel.setDriverId(driverId)
+            viewModel.fetchRideHistory()
         }
     }
 
