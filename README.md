@@ -26,6 +26,7 @@ https://github.com/user-attachments/assets/944e2482-f657-4f40-8dac-c0955693b97e
 
 ## Tecnologias Utilizadas
 
+* **Version SDK:** API 35
 * **Kotlin:** Linguagem de programação principal.
 * **Android SDK:** Kit de desenvolvimento de software para Android.
 * **Hilt:** Biblioteca para injeção de dependências.
@@ -34,6 +35,17 @@ https://github.com/user-attachments/assets/944e2482-f657-4f40-8dac-c0955693b97e
 * **Picasso:** Biblioteca para carregamento de imagens.
 * **Google Maps SDK:** Kit de desenvolvimento de software para integração com o Google Maps.
 * **Google Location Services:** Serviços de localização do Google.
+
+
+## Tecnologias de Teste Unitário
+
+* **JUnit:** Framework para testes unitários.
+* **Mockito:** Framework para criação de mocks e stubs.
+* **Mockito-Kotlin:** Biblioteca que facilita o uso do Mockito com Kotlin.
+* **androidx.arch.core:core-testing:**  Biblioteca para testes com componentes da arquitetura Android, como LiveData.
+* **kotlinx-coroutines-test:** Biblioteca para testes com corrotinas.
+
+
 
 ## Arquitetura
 
@@ -46,7 +58,7 @@ interface do usuário, tornando o código mais organizado, testável e manutení
    repositório: `git clone https://github.com/seu-usuario/RideWay-App_Teste_Emprego_Shopper.git`
 2. Abra o projeto no Android Studio.
 3. Configure as credenciais da API do Google Maps no arquivo `local.properties` <br> `GOOGLE_MAPS_API_KEY={Minha APiKEy}`.
-4. Execute o aplicativo em um emulador ou dispositivo físico.
+4. Execute o aplicativo em um emulador ou dispositivo físico. OBS: Preferencia de dispositivo com API 35.
 
 ## Uso
 
