@@ -6,6 +6,13 @@ O RideWay App é um aplicativo de transporte que permite aos usuários solicitar
 diferentes opções de veículos e preços. O aplicativo foi desenvolvido como parte de um teste de
 emprego para a vaga de Shopper.
 
+## Teste No Emulador
+
+
+https://github.com/user-attachments/assets/944e2482-f657-4f40-8dac-c0955693b97e
+
+
+
 ## Funcionalidades
 
 * **Solicitação de Corridas:** Permite aos usuários solicitar corridas informando o endereço de
